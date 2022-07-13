@@ -6,14 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class MovingFloor {
-    private final Texture auxBase;
     private final Texture base;
     private final Rectangle baseBounds;
     private final Rectangle auxBaseBounds;
     public MovingFloor()
     {
         base = new Texture("base.png");
-        auxBase = new Texture("base.png");
         baseBounds = new Rectangle();
         auxBaseBounds = new Rectangle();
         baseBounds.x = auxBaseBounds.x = 0;
@@ -32,6 +30,10 @@ public class MovingFloor {
             baseBounds.x = auxBaseBounds.x + base.getWidth();
         }
     }
+    public int getHeight()
+    {
+        return base.getHeight();
+    }
     public boolean collides(Rectangle player)
     {
         return player.overlaps(baseBounds) || player.overlaps(auxBaseBounds);
@@ -39,11 +41,10 @@ public class MovingFloor {
     public void render(SpriteBatch batch)
     {
         batch.draw(base, baseBounds.x, baseBounds.y);
-        batch.draw(auxBase, auxBaseBounds.x, auxBaseBounds.y);
+        batch.draw(base, auxBaseBounds.x, auxBaseBounds.y);
     }
     public void dispose()
     {
         base.dispose();
-        auxBase.dispose();
     }
 }

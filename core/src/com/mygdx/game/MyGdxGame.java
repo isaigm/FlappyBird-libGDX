@@ -14,20 +14,20 @@ public class MyGdxGame extends ApplicationAdapter {
 	private MovingFloor movingFloor;
 	private OrthographicCamera camera;
 	private Player player;
+	private Pipe pipe;
+	private int scrHeight;
 	@Override
 	public void create () {
-
 		movingFloor = new MovingFloor();
 		batch = new SpriteBatch();
 		background = new Texture("background-day.png");
 		camera = new OrthographicCamera();
 		player = new Player();
-		int w = Gdx.graphics.getWidth() / 3;
-		int h = Gdx.graphics.getHeight() / 3;
-		camera.setToOrtho(false, w, h);
-
+		int scrWidth = Gdx.graphics.getWidth() / 3;
+		scrHeight = Gdx.graphics.getHeight() / 3;
+		camera.setToOrtho(false, scrWidth, scrHeight);
+		pipe = new Pipe(150, 100);
 	}
-
 	@Override
 	public void render () {
 		float dt = Gdx.graphics.getDeltaTime();
@@ -43,6 +43,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(background, camera.position.x - camera.viewportWidth / 2, 0);
+		pipe.render(scrHeight, movingFloor.getHeight(), batch);
 		player.render(batch);
 		movingFloor.render(batch);
 		batch.end();
@@ -54,5 +55,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		background.dispose();
 		movingFloor.dispose();
 		player.dispose();
+		pipe.dispose();
 	}
 }

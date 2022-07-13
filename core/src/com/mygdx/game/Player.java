@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,14 +11,15 @@ import java.util.Locale;
 
 public class Player {
     private final Texture[]textures = new Texture[3];
-    private Animation<Texture> anim;
+    private final Animation<Texture> anim;
     private float gravity = -400.0f;
     private float yspeed = -50.0f;
     private float xspeed = 50.0f;
     private float x = 100;
     private float y = 350;
     private float timer = 0;
-    private Rectangle bounds;
+    private final Rectangle bounds;
+    private Sound wingSound;
     public Player()
     {
         for(int i = 0; i < 3; i++)
@@ -25,6 +27,7 @@ public class Player {
             String path = String.format(Locale.ENGLISH, "sprite%d.png", i + 1);
             textures[i] = new Texture(path);
         }
+        wingSound = Gdx.audio.newSound(Gdx.files.internal("wing.wav"));
         anim = new Animation<>(0.1f, textures);
         anim.setPlayMode(Animation.PlayMode.LOOP);
         bounds = new Rectangle();
@@ -37,6 +40,7 @@ public class Player {
         if(Gdx.input.justTouched())
         {
             yspeed = 200;
+            wingSound.play();
         }
         y += dt * yspeed;
         x += dt * xspeed;
@@ -59,5 +63,7 @@ public class Player {
         {
             textures[i].dispose();
         }
+        wingSound.dispose();
+
     }
 }
