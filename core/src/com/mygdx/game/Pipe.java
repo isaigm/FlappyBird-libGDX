@@ -11,21 +11,39 @@ public class Pipe {
     private final Texture texture;
 
 
-    public Pipe( int bottomPipeHeight, int topPipeHeight){
-        
+    public Pipe(){
+
         texture = new Texture("pipe.png");
         bottomPipe = new TextureRegion(texture);
         topPipe = new TextureRegion(texture);
+        bottomPipeBounds = new Rectangle();
+        topPipeBounds = new Rectangle();
+        bottomPipeBounds.width = texture.getWidth();
+        topPipeBounds.width = texture.getWidth();
+
+    }
+    void setHeight(int baseHeight, int scrHeight, int bottomPipeHeight, int topPipeHeight){
+        bottomPipeBounds.y = baseHeight;
         bottomPipe.setRegion(0, 0, texture.getWidth(), bottomPipeHeight);
         topPipe.setRegion(0, 0, texture.getWidth(), topPipeHeight);
         topPipe.flip(false, true);
-
+        bottomPipeBounds.height = bottomPipeHeight;
+        topPipeBounds.height = topPipeHeight;
+        topPipeBounds.y = scrHeight - topPipeHeight;
     }
-    public void render(int scrHeight, int baseHeight, SpriteBatch batch)
+    boolean outOfScene(float cameraPos)
     {
-
-        batch.draw(bottomPipe, 100, baseHeight);
-        batch.draw(topPipe, 100, scrHeight - topPipe.getRegionHeight());
+        return cameraPos >= bottomPipeBounds.x + bottomPipe.getRegionWidth();
+    }
+    void setPos(float pos)
+    {
+        bottomPipeBounds.x = pos;
+        topPipeBounds.x = pos;
+    }
+    public void render(SpriteBatch batch)
+    {
+        batch.draw(bottomPipe, bottomPipeBounds.x, bottomPipeBounds.y);
+        batch.draw(topPipe, topPipeBounds.x, topPipeBounds.y);
     }
     public void dispose()
     {

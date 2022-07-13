@@ -14,20 +14,22 @@ public class MovingFloor {
         base = new Texture("base.png");
         baseBounds = new Rectangle();
         auxBaseBounds = new Rectangle();
-        baseBounds.x = auxBaseBounds.x = 0;
+        baseBounds.x = 0;
+        auxBaseBounds.x = base.getWidth();
         baseBounds.y = auxBaseBounds.y = 0;
         baseBounds.width = auxBaseBounds.width = base.getWidth();
         baseBounds.height = auxBaseBounds.height = base.getHeight();
     }
     public void move(Camera camera)
     {
-        if((camera.position.x - baseBounds.x) >= base.getWidth() / 2.0f)
-        {
-            auxBaseBounds.x = baseBounds.x + base.getWidth();
-        }
-        if((camera.position.x - auxBaseBounds.x) >= base.getWidth() / 2.0f)
+        float camPos = camera.position.x - camera.viewportWidth / 2;
+        if(camPos > baseBounds.x + base.getWidth())
         {
             baseBounds.x = auxBaseBounds.x + base.getWidth();
+        }
+        if(camPos > auxBaseBounds.x + base.getWidth())
+        {
+            auxBaseBounds.x = baseBounds.x + base.getWidth();
         }
     }
     public int getHeight()

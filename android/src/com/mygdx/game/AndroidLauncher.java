@@ -1,11 +1,9 @@
 package com.mygdx.game;
 
 import android.os.Bundle;
-import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mygdx.game.MyGdxGame;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -17,6 +15,6 @@ public class AndroidLauncher extends AndroidApplication {
 		config.useCompass = false;
 		config.useImmersiveMode = true;
 
-		initialize(new MyGdxGame(), config);
+		initialize(new FlappyBird(), config);
 	}
 }
