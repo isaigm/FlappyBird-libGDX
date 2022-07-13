@@ -10,9 +10,7 @@ public class Pipe {
     private Rectangle bottomPipeBounds, topPipeBounds;
     private final Texture texture;
 
-
     public Pipe(){
-
         texture = new Texture("pipe.png");
         bottomPipe = new TextureRegion(texture);
         topPipe = new TextureRegion(texture);
@@ -20,7 +18,6 @@ public class Pipe {
         topPipeBounds = new Rectangle();
         bottomPipeBounds.width = texture.getWidth();
         topPipeBounds.width = texture.getWidth();
-
     }
     void setHeight(int baseHeight, int scrHeight, int bottomPipeHeight, int topPipeHeight){
         bottomPipeBounds.y = baseHeight;
@@ -39,6 +36,10 @@ public class Pipe {
     {
         bottomPipeBounds.x = pos;
         topPipeBounds.x = pos;
+    }
+    boolean collides(Player player)
+    {
+        return player.getBounds().overlaps(bottomPipeBounds) || player.getBounds().overlaps(topPipeBounds);
     }
     public void render(SpriteBatch batch)
     {

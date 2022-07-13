@@ -36,9 +36,9 @@ public class MovingFloor {
     {
         return base.getHeight();
     }
-    public boolean collides(Rectangle player)
+    public boolean collides(Player player)
     {
-        return player.overlaps(baseBounds) || player.overlaps(auxBaseBounds);
+        return player.getBounds().overlaps(baseBounds) || player.getBounds().overlaps(auxBaseBounds);
     }
     public void render(SpriteBatch batch)
     {
