@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,8 +11,14 @@ public class Pipe {
     private Rectangle bottomPipeBounds, topPipeBounds;
     private final Texture texture;
 
-    public Pipe(){
-        texture = new Texture("pipe.png");
+    public Pipe(int color){
+        if(color == 1)
+        {
+            texture = new Texture("pipe.png");
+        }else
+        {
+            texture = new Texture("pipe-red.png");
+        }
         bottomPipe = new TextureRegion(texture);
         topPipe = new TextureRegion(texture);
         bottomPipeBounds = new Rectangle();
@@ -28,9 +35,13 @@ public class Pipe {
         topPipeBounds.height = topPipeHeight;
         topPipeBounds.y = scrHeight - topPipeHeight;
     }
-    boolean outOfScene(float cameraPos)
+    boolean outOfScene(Camera camera)
     {
+        float cameraPos = camera.position.x - camera.viewportWidth / 2;
         return cameraPos > bottomPipeBounds.x + bottomPipe.getRegionWidth();
+    }
+    float getX(){
+        return bottomPipeBounds.x;
     }
     void setPos(float pos)
     {

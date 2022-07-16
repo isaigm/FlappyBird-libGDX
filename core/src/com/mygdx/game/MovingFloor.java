@@ -9,6 +9,12 @@ public class MovingFloor {
     private final Texture base;
     private final Rectangle baseBounds;
     private final Rectangle auxBaseBounds;
+    public void restart()
+    {
+        baseBounds.x = 0;
+        auxBaseBounds.x = base.getWidth();
+        baseBounds.y = auxBaseBounds.y = 0;
+    }
     public MovingFloor()
     {
         base = new Texture("base.png");
