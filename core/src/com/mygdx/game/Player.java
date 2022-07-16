@@ -24,6 +24,7 @@ public class Player {
     private final Sound pointSound;
     private float rotSpeed = 100.0f;
     private boolean collided = false;
+    private boolean pipesSkipped[] = new boolean[GameWorldConstants.npipes];
     private State state = State.ALIVE;
     enum State{
         ALIVE,
@@ -43,6 +44,10 @@ public class Player {
         timer = 0;
         sprite.setRotation(0);
         setRandomSkin();
+        for(int i = 0; i < pipesSkipped.length; i++)
+        {
+            pipesSkipped[i] = false;
+        }
     }
     private void setRandomSkin()
     {
@@ -94,6 +99,22 @@ public class Player {
         }
         yspeed += dt * gravity;
     }
+    private void checkScore(ArrayList<Pipe> pipes)
+    {
+        for(int i = 0; i < pipes.size(); i++)
+        {
+            Pipe pipe = pipes.get(i);
+            if(bounds.x > pipe.getLeftPos()  && !pipesSkipped[i])
+            {
+                pipesSkipped[i] = true;
+                pointSound.play();
+            }
+            if(bounds.x < pipe.getLeftPos())
+            {
+                pipesSkipped[i] = false;
+            }
+        }
+    }
     public void update(float dt, ArrayList<Pipe> pipes, MovingFloor floor){
         switch (state)
         {
@@ -120,6 +141,7 @@ public class Player {
                     wingSound.play();
                     sprite.rotate(45 - sprite.getRotation());
                 }
+                checkScore(pipes);
                 bounds.x += dt * xspeed;
                 timer += dt;
                 updateY(dt);

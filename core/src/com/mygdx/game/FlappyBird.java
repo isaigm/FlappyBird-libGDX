@@ -17,7 +17,6 @@ public class FlappyBird extends ApplicationAdapter {
     private int scrHeight;
     private int scrWidth;
     private ArrayList<Pipe> pipes;
-    private final int npipes = 4;
 
     private void setRandomHeightPipe(Pipe pipe)
     {
@@ -42,7 +41,7 @@ public class FlappyBird extends ApplicationAdapter {
             pipes.clear();
         }
         int x = scrWidth + 100;
-        for(int i = 0; i < npipes; i++)
+        for(int i = 0; i < GameWorldConstants.npipes; i++)
         {
             int freeSpace = getRandomIn(150, 200);
             Pipe pipe = new Pipe(color);
@@ -82,8 +81,8 @@ public class FlappyBird extends ApplicationAdapter {
         {
             setRandomHeightPipe(pipe);
             float nextPos = camera.position.x + camera.viewportWidth / 2;
-            float lastPipePos = pipes.get(npipes - 1).getX();
-            if(pipes.get(npipes - 1).getX()  < nextPos)
+            float lastPipePos = pipes.get(GameWorldConstants.npipes - 1).getX();
+            if(pipes.get(GameWorldConstants.npipes - 1).getX()  < nextPos)
             {
                 pipe.setPos(nextPos);
             }else
@@ -137,4 +136,3 @@ public class FlappyBird extends ApplicationAdapter {
         }
     }
 }
- 

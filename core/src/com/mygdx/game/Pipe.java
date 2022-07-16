@@ -43,6 +43,10 @@ public class Pipe {
     float getX(){
         return bottomPipeBounds.x;
     }
+    float getLeftPos()
+    {
+        return bottomPipeBounds.x + bottomPipe.getRegionWidth();
+    }
     void setPos(float pos)
     {
         bottomPipeBounds.x = pos;
