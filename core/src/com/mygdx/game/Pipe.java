@@ -30,7 +30,7 @@ public class Pipe {
     }
     boolean outOfScene(float cameraPos)
     {
-        return cameraPos >= bottomPipeBounds.x + bottomPipe.getRegionWidth();
+        return cameraPos > bottomPipeBounds.x + bottomPipe.getRegionWidth();
     }
     void setPos(float pos)
     {
