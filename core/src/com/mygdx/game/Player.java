@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class Player {
-    private final Texture[]textures = new Texture[3];
+    private Texture[]textures = null;
     private final Animation<Texture> anim;
     private float gravity = -600.0f;
     private float yspeed = -50.0f;
@@ -52,23 +52,17 @@ public class Player {
     private void setRandomSkin()
     {
         int skin = Random.getRandomIn(0, 2);
-        for(int i = 0; i < 3; i++)
+        switch (skin)
         {
-            String path = "";
-            switch (skin)
-            {
-                case 0:
-                    path = String.format(Locale.ENGLISH, "red%d.png", i + 1);
-                    break;
-                case 1:
-                    path = String.format(Locale.ENGLISH, "blue%d.png", i + 1);
-                    break;
-                case 2:
-                    path = String.format(Locale.ENGLISH, "yellow%d.png", i + 1);
-                    break;
-            }
-            if(textures[i] != null) textures[i].dispose();
-            textures[i] = new Texture(path);
+            case 0:
+                textures = AssetManager.getInstance().getRedSkin();
+                break;
+            case 1:
+                textures = AssetManager.getInstance().getYellowSkin();
+                break;
+            case 2:
+                textures = AssetManager.getInstance().getBlueSkin();
+                break;
         }
     }
     public Player()
@@ -183,10 +177,6 @@ public class Player {
     }
     public void dispose()
     {
-        for(int i = 0; i < 3; i++)
-        {
-            textures[i].dispose();
-        }
         wingSound.dispose();
         hitSound.dispose();
         pointSound.dispose();

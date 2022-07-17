@@ -16,6 +16,9 @@ public class FlappyBird extends ApplicationAdapter {
     private Player player;
     private int scrHeight;
     private int scrWidth;
+    private float blinkTime = 0.1f;
+    private float blinkTimer = 0;
+    private boolean blink = false;
     private ArrayList<Pipe> pipes;
 
     private void setRandomHeightPipe(Pipe pipe)
@@ -55,10 +58,10 @@ public class FlappyBird extends ApplicationAdapter {
     {
         if(getRandomIn(0, 1) == 1)
         {
-            background = new Texture("background-day.png");
+            background = AssetManager.getInstance().getDayBg();
         }else
         {
-            background = new Texture("background-night.png");
+            background = AssetManager.getInstance().getNightBg();
         }
     }
     @Override
@@ -97,22 +100,31 @@ public class FlappyBird extends ApplicationAdapter {
     public void render () {
         float dt = Gdx.graphics.getDeltaTime();
         player.update(dt, pipes, movingFloor);
-        if(!player.dead())
+        if(player.dead()) blinkTimer += dt;
+        else
         {
             detectOutOfScenePipes();
             float cameraSpeed = 120.0f;
             camera.position.x += cameraSpeed * dt;
             movingFloor.move(camera);
-        }else if(Gdx.input.justTouched() && player.canRestart())
+        }
+        if(Gdx.input.justTouched() && player.canRestart())
         {
             player.restart();
             movingFloor.restart();
             camera.position.x = camera.viewportWidth / 2;
             setRandomBackground();
             spawnPipes();
+            blink = false;
+            blinkTimer = 0;
         }
         camera.update();
         ScreenUtils.clear(0, 0, 0, 1);
+        if(blinkTimer > blinkTime && !blink)
+        {
+            blink = true;
+            return;
+        }
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(background, camera.position.x - camera.viewportWidth / 2, 0);
@@ -130,9 +142,6 @@ public class FlappyBird extends ApplicationAdapter {
         background.dispose();
         movingFloor.dispose();
         player.dispose();
-        for(Pipe pipe: pipes)
-        {
-            pipe.dispose();
-        }
+        AssetManager.getInstance().dispose();
     }
 }

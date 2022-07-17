@@ -14,10 +14,10 @@ public class Pipe {
     public Pipe(int color){
         if(color == 1)
         {
-            texture = new Texture("pipe.png");
+            texture = AssetManager.getInstance().getGreenPipe();
         }else
         {
-            texture = new Texture("pipe-red.png");
+            texture = AssetManager.getInstance().getRedPipe();
         }
         bottomPipe = new TextureRegion(texture);
         topPipe = new TextureRegion(texture);
@@ -60,9 +60,5 @@ public class Pipe {
     {
         batch.draw(bottomPipe, bottomPipeBounds.x, bottomPipeBounds.y);
         batch.draw(topPipe, topPipeBounds.x, topPipeBounds.y);
-    }
-    public void dispose()
-    {
-        texture.dispose();
     }
 }
