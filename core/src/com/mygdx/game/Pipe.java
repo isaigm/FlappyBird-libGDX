@@ -54,7 +54,8 @@ public class Pipe {
     }
     boolean collides(Player player)
     {
-        return player.getBounds().overlaps(bottomPipeBounds) || player.getBounds().overlaps(topPipeBounds);
+        return Collision.detectCollision(player.getBounds(), bottomPipeBounds) || Collision.detectCollision(player.getBounds(), topPipeBounds);
+
     }
     public void render(SpriteBatch batch)
     {

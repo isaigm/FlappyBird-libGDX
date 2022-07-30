@@ -2,9 +2,11 @@ package com.mygdx.game;
 import static com.mygdx.game.Random.getRandomIn;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.ArrayList;
 
@@ -66,6 +68,7 @@ public class FlappyBird extends ApplicationAdapter {
     }
     @Override
     public void create () {
+
         pipes = new ArrayList<>();
         movingFloor = new MovingFloor();
         batch = new SpriteBatch();

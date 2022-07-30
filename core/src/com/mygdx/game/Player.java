@@ -12,19 +12,20 @@ import java.util.ArrayList;
 
 public class Player {
     private Texture[]textures = null;
-    private final Animation<Texture> anim;
+    private Animation<Texture> anim;
     private float gravity = -600.0f;
     private float yspeed = -50.0f;
     private float xspeed = 120.0f;
+    private float x, y;
     private float timer = 0;
-    private final Rectangle bounds;
-    private final Sprite sprite;
+    private Sprite sprite;
     private final Sound wingSound;
     private final Sound hitSound;
     private final Sound pointSound;
     private float rotSpeed = 100.0f;
     private boolean collided = false;
     private boolean pipesSkipped[] = new boolean[GameWorldConstants.npipes];
+    private Circle circle;
     private State state = State.ALIVE;
     enum State{
         ALIVE,
@@ -33,13 +34,15 @@ public class Player {
     }
     void restart()
     {
+
         collided = false;
         state = State.ALIVE;
         yspeed = -50.0f;
         gravity = -600.0f;
-        bounds.x = (float) Gdx.graphics.getWidth() / 6 - bounds.width / 2;
-        bounds.y = (float) Gdx.graphics.getHeight() / 6 - bounds.height / 2 + 50;
-        sprite.setPosition(bounds.x, bounds.y);
+        x = (float) Gdx.graphics.getWidth() / 6 - textures[0].getWidth() / 2;
+        y = (float) Gdx.graphics.getHeight() / 6 - textures[0].getHeight() / 2 + 50;
+        sprite.setPosition(x, y);
+        circle.setPosition(x + sprite.getOriginX(),y + sprite.getOriginY());
         rotSpeed = 100.0f;
         timer = 0;
         sprite.setRotation(0);
@@ -69,21 +72,22 @@ public class Player {
     {
         setRandomSkin();
         sprite = new Sprite(textures[0]);
+        anim = new Animation<>(0.1f, textures);
+        anim.setPlayMode(Animation.PlayMode.LOOP);
         pointSound = Gdx.audio.newSound(Gdx.files.internal("audio_point.wav"));
         wingSound = Gdx.audio.newSound(Gdx.files.internal("wing.wav"));
         hitSound = Gdx.audio.newSound(Gdx.files.internal("hit.wav"));
-        anim = new Animation<>(0.1f, textures);
-        anim.setPlayMode(Animation.PlayMode.LOOP);
-        bounds = new Rectangle();
-        bounds.x = (float) Gdx.graphics.getWidth() / 6 - bounds.width / 2;
-        bounds.y = (float) Gdx.graphics.getHeight() / 6 - bounds.height / 2 + 50;
-        bounds.width = textures[0].getWidth();
-        bounds.height = textures[0].getHeight();
+        x = (float) Gdx.graphics.getWidth() / 6 - textures[0].getWidth() / 2;
+        y = (float) Gdx.graphics.getHeight() / 6 - textures[0].getHeight() / 2 + 50;
+        sprite.setPosition(x, y);
+        circle = new Circle(x + sprite.getOriginX(), y + sprite.getOriginY(), textures[0].getWidth() / 2 - 5);
+
     }
     private void updateY(float dt)
     {
-        bounds.y += dt * yspeed;
-        sprite.setPosition(bounds.x, bounds.y);
+        y += dt * yspeed;
+        sprite.setPosition(x, y);
+        circle.setPosition(x + sprite.getOriginX(),y + sprite.getOriginY());
         if(sprite.getRotation() > -90)
         {
             sprite.rotate(-rotSpeed * dt);
@@ -98,12 +102,12 @@ public class Player {
         for(int i = 0; i < pipes.size(); i++)
         {
             Pipe pipe = pipes.get(i);
-            if(bounds.x > pipe.getLeftPos()  && !pipesSkipped[i])
+            if(x > pipe.getLeftPos()  && !pipesSkipped[i])
             {
                 pipesSkipped[i] = true;
                 pointSound.play();
             }
-            if(bounds.x < pipe.getLeftPos())
+            if(x < pipe.getLeftPos())
             {
                 pipesSkipped[i] = false;
             }
@@ -113,7 +117,7 @@ public class Player {
         switch (state)
         {
             case ALIVE:
-                if(collidePipes(pipes) || bounds.y > (float) Gdx.graphics.getHeight() / 3)
+                if(collidePipes(pipes) || y > (float) Gdx.graphics.getHeight() / 3)
                 {
                     hitSound.play();
                     rotSpeed = 150.0f;
@@ -136,7 +140,7 @@ public class Player {
                     sprite.rotate(45 - sprite.getRotation());
                 }
                 checkScore(pipes);
-                bounds.x += dt * xspeed;
+                x += dt * xspeed;
                 timer += dt;
                 updateY(dt);
                 break;
@@ -166,12 +170,13 @@ public class Player {
     {
         return collided;
     }
-    public Rectangle getBounds()
+    public Circle getBounds()
     {
-        return bounds;
+        return circle;
     }
     public void render(SpriteBatch batch)
     {
+
         sprite.setTexture(anim.getKeyFrame(timer, true));
         sprite.draw(batch);
     }

@@ -44,7 +44,7 @@ public class MovingFloor {
     }
     public boolean collides(Player player)
     {
-        return player.getBounds().overlaps(baseBounds) || player.getBounds().overlaps(auxBaseBounds);
+        return Collision.detectCollision(player.getBounds(), baseBounds) || Collision.detectCollision(player.getBounds(), auxBaseBounds);
     }
     public void render(SpriteBatch batch)
     {
